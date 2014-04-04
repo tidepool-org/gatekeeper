@@ -1,0 +1,19 @@
+{
+  "name": "gatekeeper",
+  "version": "0.0.0",
+  "description": "Authorization server and client",
+  "main": "lib/client/index.js",
+  "directories": {
+    "lib/client": "./lib/client"
+  },
+  "repository": "https://github.com/tidepool-org/gatekeeper.git",
+  "author": {
+    "name": "Eric Tschetter",
+    "email": "cheddar@tidepool.org",
+    "url": "https://www.github.com/cheddar"
+  },
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "lodash": "2.4.1"
+  }
+}
