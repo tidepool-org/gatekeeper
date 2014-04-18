@@ -1,0 +1,113 @@
+/*
+ * == BSD2 LICENSE ==
+ */
+
+var _ = require('lodash');
+var async = require('async');
+var expect = require('salinity').expect;
+
+var dataBroker = require('../../lib/server/dataBroker.js');
+
+describe('dataBroker.js', function(){
+  var mongoClient;
+  var broker;
+
+  var mockData = [
+    {userId: 'bob', groupId: 'theGroup', permission: 'view', payload: {}},
+    {userId: 'bob', groupId: 'theGroup', permission: 'upload', payload: { sources: ['carelink'] }},
+    {userId: 'bob', groupId: 'anotherGroup', permission: 'view', payload: {}},
+    {userId: 'sally', groupId: 'theGroup', permission: 'view', payload: { messages: false }}
+  ];
+
+  before(function(done){
+    mongoClient = require('../../lib/mongo/mongoClient.js')({connectionString: 'mongodb://localhost/gatesBrokerTest'});
+    broker = dataBroker({secretKey: 'bob'}, mongoClient);
+
+    mongoClient.start(function(err){
+      if (err != null) {
+        done(err);
+      } else {
+        mongoClient.withCollection('perms', done, function(perms) {
+          perms.remove(done);
+        });
+      }
+    });
+  });
+
+  function getAllFromPerms(sadCb, happyCb) {
+    mongoClient.withCollection('perms', sadCb, function(perms){
+      perms.find().toArray(function(err, results) {
+        if (err != null) {
+          return sadCb(err);
+        }
+        happyCb(results);
+      });
+    });
+  }
+
+  it('Adds perms', function(done) {
+    async.mapSeries(
+      mockData,
+      function(entry, cb) {
+        broker.addPermission(entry.userId, entry.groupId, entry.permission, entry.payload, cb);
+      },
+      function(err) {
+        if (err != null) {
+          return done(err);
+        }
+
+        getAllFromPerms(done, function(results){
+          expect(results).length(mockData.length);
+
+          var res = results.map(_.partialRight(_.pick.bind(_), 'groupId', 'userId', 'permission', 'payload'));
+          expect(res).to.deep.equal(mockData);
+
+          done();
+        });
+      }
+    );
+  });
+
+  it ('Reads perms', function(done) {
+    broker.userInGroup('bob', 'theGroup', function(err, perms) {
+      if (err != null) {
+        return done(err);
+      }
+
+      expect(perms).to.deep.equal({ view: {}, upload: { sources: ['carelink'] }});
+      done();
+    });
+  });
+
+  it ('Reads users in group', function(done) {
+    broker.usersInGroup('theGroup', function(err, users) {
+      if (err != null) {
+        return done(err);
+      }
+
+      expect(users).to.deep.equal(
+        {
+          bob: { view: {}, upload: { sources: ['carelink'] }},
+          sally: { view: { messages: false } }
+        }
+      );
+      done();
+    });
+  });
+
+  it ('Reads groups for user', function(done) {
+    broker.groupsForUser('bob', function(err, users) {
+      if (err != null) {
+        return done(err);
+      }
+
+      expect(users).to.deep.equal(
+        {
+          theGroup: { view: {}, upload: { sources: ['carelink'] }},
+          anotherGroup: { view: {} }
+        }
+      );
+      done();
+    });
+  });
+});

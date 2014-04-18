@@ -15,5 +15,19 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "lodash": "2.4.1"
+  },
+  "usageOfDevDepdencencies": "Dev dependencies has the dependencies of the server first, testing and stuff second",
+  "devDependencies": {
+    "amoeba": "0.0.8",
+    "async": "0.6.2",
+    "bunyan": "0.22.2",
+    "hakken": "0.1.4",
+    "mongodb": "1.4.0",
+    "restify": "2.6.0",
+    "user-api-client": "0.1.8",
+
+    "jshint": "2.4.3",
+    "mocha": "1.18.2",
+    "salinity": "0.0.1"
   }
 }
