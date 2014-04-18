@@ -59,8 +59,13 @@ describe('dataBroker.js', function(){
         getAllFromPerms(done, function(results){
           expect(results).length(mockData.length);
 
-          var res = results.map(_.partialRight(_.pick.bind(_), 'groupId', 'userId', 'permission', 'payload'));
-          expect(res).to.deep.equal(mockData);
+          for (var i = 0; i < results.length; ++i) {
+            expect(results[i]).to.contain.key('groupId').not.equals(mockData[i].groupId);
+          }
+
+          var pickFields = _.partialRight(_.pick.bind(_), 'userId', 'permission', 'payload');
+          var res = results.map(pickFields);
+          expect(res).to.deep.equal(mockData.map(pickFields));
 
           done();
         });
