@@ -2,6 +2,9 @@
  * == BSD2 LICENSE ==
  */
 
+'use strict';
+/* jshint expr: true */
+
 var _ = require('lodash');
 var async = require('async');
 var expect = require('salinity').expect;

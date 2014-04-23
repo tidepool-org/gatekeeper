@@ -2,6 +2,10 @@
  * == BSD2 LICENSE ==
  */
 
+'use strict';
+/* jshint expr: true */
+
+
 var salinity = require('salinity');
 
 var expect = salinity.expect;
