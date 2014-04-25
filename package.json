@@ -20,7 +20,7 @@
     "user-api-client": "0.1.8"
   },
   "devDependencies": {
-    "tidepool-gatekeeper": "0.1.0",
+    "tidepool-gatekeeper": "0.1.1",
     "jshint": "2.4.3",
     "mocha": "1.18.2",
     "salinity": "0.0.1"

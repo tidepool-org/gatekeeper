@@ -49,9 +49,11 @@ var log = require('./lib/log.js')('index.js');
   );
 
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
-  var dataBroker = lifecycle.add('dataBroker', require('./lib/dataBroker.js')(config.gatekeeper, mongoClient));
+  var dataBroker = require('./lib/dataBroker.js')(config.gatekeeper, mongoClient);
 
-  var server = require('./lib/server.js')(userApiClient, dataBroker);
+  var conversionBroker = require('./lib/conversionBroker.js')(userApiClient, seagullClient, armadaClient, dataBroker);
+
+  var server = require('./lib/server.js')(userApiClient, conversionBroker);
 
   if (config.httpPort != null) {
     poolWhisperer.withHttp(config.httpPort);

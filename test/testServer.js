@@ -42,7 +42,7 @@ describe('server.js', function(){
     };
   }
 
-  describe('/authorized/group/:userId', function(){
+  describe('/permissions/group/:userId', function(){
     it('allows a user to see their own info', function(done){
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'groupsForUser').callsArgWith(1, null, {user1: {root: {}}, groupA: {view: {}}, groupB: {admin: {}}});
@@ -105,7 +105,7 @@ describe('server.js', function(){
   });
 
 
-  describe('/authorized/:groupId', function(){
+  describe('/permissions/:groupId', function(){
     it('allows a user to see their own group', function(done){
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'usersInGroup').callsArgWith(1, null, {user1: {root: {}}, user2: {view: {}}, user3: {admin: {}}});
@@ -167,7 +167,7 @@ describe('server.js', function(){
     });
   });
 
-  describe('/authorized/:groupId/:userId', function(){
+  describe('/permissions/:groupId/:userId', function(){
     it('passes the happy path', function(done) {
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'userInGroup').callsArgWith(2, null, {view: {}});
