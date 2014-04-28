@@ -140,7 +140,7 @@ describe('dataBroker.js', function () {
       broker.setPermissions('bob', 'anotherGroup', null, function(err) {
         expect(err).to.not.exist;
         broker.userInGroup('bob', 'anotherGroup', done);
-      })
+      });
     });
-  })
+  });
 });
