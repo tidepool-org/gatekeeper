@@ -18,7 +18,7 @@ describe('server.js', function(){
   var server = require('../lib/server.js')(userApiClient, dataBroker);
 
   var token = 'tokenTextHere';
-  var tokenGetter = function(){ return token; };
+  var tokenGetter = function(cb){ return cb(null, token); };
   var hostGetter = { get: function(){ return [{protocol: 'http', host: 'localhost:12345'}]; } };
   var client = require('tidepool-gatekeeper').client(require('amoeba').httpClient(), tokenGetter, hostGetter);
 
@@ -42,7 +42,7 @@ describe('server.js', function(){
     };
   }
 
-  describe('/permissions/group/:userId', function(){
+  describe('/access/groups/:userId', function(){
     it('allows a user to see their own info', function(done){
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'groupsForUser').callsArgWith(1, null, {user1: {root: {}}, groupA: {view: {}}, groupB: {admin: {}}});
@@ -105,7 +105,7 @@ describe('server.js', function(){
   });
 
 
-  describe('/permissions/:groupId', function(){
+  describe('/access/:groupId', function(){
     it('allows a user to see their own group', function(done){
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'usersInGroup').callsArgWith(1, null, {user1: {root: {}}, user2: {view: {}}, user3: {admin: {}}});
@@ -167,7 +167,7 @@ describe('server.js', function(){
     });
   });
 
-  describe('/permissions/:groupId/:userId', function(){
+  describe('/access/:groupId/:userId', function(){
     it('passes the happy path', function(done) {
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'userInGroup').callsArgWith(2, null, {view: {}});

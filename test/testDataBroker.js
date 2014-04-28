@@ -17,7 +17,7 @@ describe('dataBroker.js', function () {
 
   var mockData = [
     {userId: 'bob', groupId: 'theGroup', permissions: { view: {}, upload: { sources: ['carelink'] } }},
-    {userId: 'bob', groupId: 'anotherGroup', permissions: { view: {} }},
+    {userId: 'bob', groupId: 'anotherGroup', permissions: { view: {}, root: {} }},
     {userId: 'sally', groupId: 'theGroup', permissions: { view: { messages: false }} }
   ];
 
@@ -134,4 +134,13 @@ describe('dataBroker.js', function () {
       });
     });
   });
+
+  describe('setPermissions', function(){
+    it('Deletes permissions', function(done) {
+      broker.setPermissions('bob', 'anotherGroup', null, function(err) {
+        expect(err).to.not.exist;
+        broker.userInGroup('bob', 'anotherGroup', done);
+      })
+    });
+  })
 });

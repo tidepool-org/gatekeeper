@@ -30,10 +30,11 @@ var log = require('./lib/log.js')('index.js');
 
 (function () {
   var config = require('./env.js');
-  var lifecycle = require('amoeba').lifecycle();
-  var hakken = require('hakken')(config.discovery).client();
+  var amoeba = require('amoeba');
+  var lifecycle = amoeba.lifecycle();
+  var hakken = lifecycle.add('hakken', require('hakken')(config.discovery, log).client());
 
-  lifecycle.add('hakken', hakken);
+  var httpClient = amoeba.httpClient();
 
   var userApiClient = require('user-api-client').client(
     config.userApi,
@@ -41,7 +42,7 @@ var log = require('./lib/log.js')('index.js');
   );
 
   var seagullClient = require('tidepool-seagull-client')(
-    lifecycle.add('seagull-watch', hakken.watchFromConfig(config.seagull.serviceSpec))
+    lifecycle.add('seagull-watch', hakken.watchFromConfig(config.seagull.serviceSpec)), {}, httpClient
   );
 
   var armadaClient = require('tidepool-armada-client')(
@@ -56,12 +57,12 @@ var log = require('./lib/log.js')('index.js');
   var server = require('./lib/server.js')(userApiClient, conversionBroker);
 
   if (config.httpPort != null) {
-    poolWhisperer.withHttp(config.httpPort);
+    server.withHttp(config.httpPort);
   }
   if (config.httpsPort != null) {
-    poolWhisperer.withHttps(config.httpsPort, config.httpsConfig);
+    server.withHttps(config.httpsPort, config.httpsConfig);
   }
-  lifecycle.add('server', poolWhisperer);
+  lifecycle.add('server', server);
 
   lifecycle.add(
     'servicePublish!',
