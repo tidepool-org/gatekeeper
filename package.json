@@ -1,11 +1,7 @@
 {
-  "name": "tidepool-gatekeeper",
+  "name": "gatekeeper",
   "version": "0.0.2",
-  "description": "Authorization server and client",
-  "main": "lib/client/index.js",
-  "directories": {
-    "lib/client": "./lib/client"
-  },
+  "description": "Authorization server",
   "repository": "https://github.com/tidepool-org/gatekeeper.git",
   "author": {
     "name": "Eric Tschetter",
@@ -14,6 +10,21 @@
   },
   "license": "BSD-2-Clause",
   "dependencies": {
-    "lodash": "2.4.1"
+    "amoeba": "0.1.1",
+    "async": "0.7.0",
+    "bunyan": "0.22.2",
+    "hakken": "0.1.4",
+    "lodash": "2.4.1",
+    "mongodb": "1.4.0",
+    "restify": "2.6.0",
+    "tidepool-armada-client": "0.0.2",
+    "tidepool-seagull-client": "0.1.0",
+    "user-api-client": "0.1.8"
+  },
+  "devDependencies": {
+    "tidepool-gatekeeper": "0.1.5",
+    "jshint": "2.4.3",
+    "mocha": "1.18.2",
+    "salinity": "0.0.1"
   }
 }
