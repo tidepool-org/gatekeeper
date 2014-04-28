@@ -1,6 +1,6 @@
 {
   "name": "gatekeeper",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Authorization server",
   "repository": "https://github.com/tidepool-org/gatekeeper.git",
   "author": {
