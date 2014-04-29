@@ -18,7 +18,7 @@
     "mongodb": "1.4.0",
     "restify": "2.6.0",
     "tidepool-armada-client": "0.0.2",
-    "tidepool-seagull-client": "0.1.0",
+    "tidepool-seagull-client": "0.1.1",
     "user-api-client": "0.1.8"
   },
   "devDependencies": {
