@@ -102,6 +102,19 @@ describe('server.js', function(){
         return done();
       });
     });
+
+    it('errors on error as a new test', function(done){
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      sinon.stub(dataBroker, 'groupsForUser').callsArgWith(1, new Error('MarsAndVenus'));
+
+      client.groupsForUser('user1', function(err, result) {
+        expect(err).to.deep.equal({ statusCode: 500 });
+        expect(result).to.not.exist;
+        expect(dataBroker.groupsForUser).to.have.been.calledWith('user1', sinon.match.func);
+        userExpectations();
+        return done();
+      });
+    });
   });
 
 
