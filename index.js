@@ -52,9 +52,7 @@ var log = require('./lib/log.js')('index.js');
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
   var dataBroker = require('./lib/dataBroker.js')(config.gatekeeper, mongoClient);
 
-  var conversionBroker = require('./lib/conversionBroker.js')(userApiClient, seagullClient, armadaClient, dataBroker);
-
-  var server = require('./lib/server.js')(userApiClient, conversionBroker);
+  var server = require('./lib/server.js')(userApiClient, dataBroker);
 
   if (config.httpPort != null) {
     server.withHttp(config.httpPort);
