@@ -41,14 +41,6 @@ var log = require('./lib/log.js')('index.js');
     lifecycle.add('user-api-watch', hakken.watchFromConfig(config.userApi.serviceSpec))
   );
 
-  var seagullClient = require('tidepool-seagull-client')(
-    lifecycle.add('seagull-watch', hakken.watchFromConfig(config.seagull.serviceSpec)), {}, httpClient
-  );
-
-  var armadaClient = require('tidepool-armada-client')(
-    lifecycle.add('armada-watch', hakken.watchFromConfig(config.armada.serviceSpec))
-  );
-
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
   var dataBroker = require('./lib/dataBroker.js')(config.gatekeeper, mongoClient);
 

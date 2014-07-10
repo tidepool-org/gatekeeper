@@ -71,16 +71,6 @@ module.exports = (function() {
     serverSecret: config.fromEnvironment('SERVER_SECRET')
   };
 
-  env.seagull = {
-    // The config object to discover seagull.  This is just passed through to hakken.watchFromConfig()
-    serviceSpec: JSON.parse(config.fromEnvironment('SEAGULL_SERVICE'))
-  };
-
-  env.armada = {
-    // The config object to discover armada.  This is just passed through to hakken.watchFromConfig()
-    serviceSpec: JSON.parse(config.fromEnvironment('ARMADA_SERVICE'))
-  };
-
   env.gatekeeper = {
     secretKey: config.fromEnvironment('GATEKEEPER_SECRET')
   };
