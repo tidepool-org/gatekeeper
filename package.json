@@ -23,6 +23,6 @@
     "tidepool-gatekeeper": "0.1.5",
     "jshint": "2.6.3",
     "mocha": "2.1.0",
-    "salinity": "0.0.6"
+    "salinity": "0.0.7"
   }
 }
