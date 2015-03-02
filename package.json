@@ -16,7 +16,7 @@
     "hakken": "0.1.4",
     "lodash": "3.3.1",
     "mongodb": "1.4.32",
-    "restify": "2.6.0",
+    "restify": "2.8.5",
     "user-api-client": "0.3.0"
   },
   "devDependencies": {
