@@ -22,7 +22,7 @@
   "devDependencies": {
     "tidepool-gatekeeper": "0.1.5",
     "jshint": "2.4.3",
-    "mocha": "1.18.2",
+    "mocha": "2.1.0",
     "salinity": "0.0.6"
   }
 }
