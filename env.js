@@ -16,6 +16,8 @@
 // not, you can obtain one from Tidepool Project at tidepool.org.
 // == BSD2 LICENSE ==
 
+'use strict';
+
 var fs = require('fs');
 
 var config = require('amoeba').config;
@@ -27,8 +29,6 @@ function maybeReplaceWithContentsOfFile(obj, field)
     obj[field] = fs.readFileSync(potentialFile).toString();
   }
 }
-
-'use strict';
 
 module.exports = (function() {
   var env = {};
