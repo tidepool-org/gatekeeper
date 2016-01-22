@@ -42,7 +42,7 @@ describe('server.js', function(){
     };
   }
 
-  describe('/access/groups/:userId', function(){
+  describe('GET /access/groups/:userId', function(){
     it('allows a user to see their own info', function(done){
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'groupsForUser').callsArgWith(1, null, {user1: {root: {}}, groupA: {view: {}}, groupB: {admin: {}}});
@@ -105,7 +105,7 @@ describe('server.js', function(){
   });
 
 
-  describe('/access/:groupId', function(){
+  describe('GET /access/:groupId', function(){
     it('allows a user to see their own group', function(done){
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'usersInGroup').callsArgWith(1, null, {user1: {root: {}}, user2: {view: {}}, user3: {admin: {}}});
@@ -167,7 +167,7 @@ describe('server.js', function(){
     });
   });
 
-  describe('/access/:groupId/:userId', function(){
+  describe('GET /access/:groupId/:userId', function(){
     it('passes the happy path', function(done) {
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'userInGroup').callsArgWith(2, null, {view: {}});
@@ -286,6 +286,152 @@ describe('server.js', function(){
         expect(err).to.deep.equal({ statusCode: 500 });
         expect(result).to.not.exist;
         expect(dataBroker.userInGroup).to.have.been.calledWith('user2', 'groupA', sinon.match.func);
+        userExpectations();
+        return done();
+      });
+    });
+  });
+
+  describe('POST /access/:groupId/:userId', function(){
+    it('rejects people who are not the group, an admin of the group (none), nor a server', function(done) {
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      sinon.stub(dataBroker, 'userInGroup').onFirstCall().callsArgWith(2, null, null)
+
+      client.setPermissions('user1', 'user2', { upload: {} }, function(err, result){
+        expect(err).to.deep.equal({ statusCode: 401, message: 'Nope nope nope' });
+        expect(result).to.not.exist;
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        userExpectations();
+        return done();
+      });
+    });
+
+    it('rejects people who are not the group, an admin of the group (view only), nor a server', function(done) {
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      sinon.stub(dataBroker, 'userInGroup').onFirstCall().callsArgWith(2, null, { view: {} })
+
+      client.setPermissions('user1', 'user2', { upload: {} }, function(err, result){
+        expect(err).to.deep.equal({ statusCode: 401, message: 'Nope nope nope' });
+        expect(result).to.not.exist;
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        userExpectations();
+        return done();
+      });
+    });
+
+    it('rejects people who are not the group, an admin of the group (upload only), nor a server', function(done) {
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      sinon.stub(dataBroker, 'userInGroup').onFirstCall().callsArgWith(2, null, { upload: {} })
+
+      client.setPermissions('user1', 'user2', { view: {} }, function(err, result){
+        expect(err).to.deep.equal({ statusCode: 401, message: 'Nope nope nope' });
+        expect(result).to.not.exist;
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        userExpectations();
+        return done();
+      });
+    });
+
+    it('allows the server', function(done) {
+      var userExpectations = expectTokenCheck(null, { userid: 'user1', isserver: true });
+      sinon.stub(dataBroker, 'userInGroup').onFirstCall().callsArgWith(2, null, { upload: {} })
+      sinon.stub(dataBroker, 'setPermissions').onFirstCall().callsArgWith(3, null);
+
+      client.setPermissions('user1', 'user2', { upload: {} }, function(err, result){
+        expect(result).to.deep.equal({ upload: {} });
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        expect(dataBroker.setPermissions).to.have.been.calledWith('user1', 'user2', { upload: {} }, sinon.match.func);
+        userExpectations();
+        return done(err);
+      });
+    });
+
+    it('allows people who are the group', function(done) {
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      sinon.stub(dataBroker, 'userInGroup').onFirstCall().callsArgWith(2, null, { upload: {} })
+      sinon.stub(dataBroker, 'setPermissions').onFirstCall().callsArgWith(3, null);
+
+      client.setPermissions('user2', 'user1', { upload: {} }, function(err, result){
+        expect(result).to.deep.equal({ upload: {} });
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user2', 'user1', sinon.match.func);
+        expect(dataBroker.setPermissions).to.have.been.calledWith('user2', 'user1', { upload: {} }, sinon.match.func);
+        userExpectations();
+        return done(err);
+      });
+    });
+
+    it('allows people who are an admin in the group', function(done) {
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      var userInGroupStub = sinon.stub(dataBroker, 'userInGroup')
+      userInGroupStub.onFirstCall().callsArgWith(2, null, { admin: {} })
+      userInGroupStub.onSecondCall().callsArgWith(2, null, { admin: {}, upload: {} })
+      sinon.stub(dataBroker, 'setPermissions').onFirstCall().callsArgWith(3, null);
+
+      client.setPermissions('user1', 'user2', { upload: {} }, function(err, result){
+        expect(result).to.deep.equal({ admin: {}, upload: {} });
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        expect(dataBroker.setPermissions).to.have.been.calledWith('user1', 'user2', { upload: {} }, sinon.match.func);
+        userExpectations();
+        return done(err);
+      });
+    });
+
+    it('allows people who are removing themselves from the group', function(done) {
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      var userInGroupStub = sinon.stub(dataBroker, 'userInGroup')
+      userInGroupStub.onFirstCall().callsArgWith(2, null, { upload: {}, view: {} })
+      userInGroupStub.onSecondCall().callsArgWith(2, null, null)
+      sinon.stub(dataBroker, 'setPermissions').onFirstCall().callsArgWith(3, null);
+
+      client.setPermissions('user1', 'user2', {}, function(err, result){
+        expect(result).to.not.exist;
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        expect(dataBroker.setPermissions).to.have.been.calledWith('user1', 'user2', {}, sinon.match.func);
+        userExpectations();
+        return done(err);
+      });
+    });
+
+    it('errors on call to userInGroup to check admin state', function(done){
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      sinon.stub(dataBroker, 'userInGroup').onFirstCall().callsArgWith(2, new Error('MarsAndVenus'), null)
+
+      client.setPermissions('user1', 'user2', { upload: {} }, function(err, result){
+        expect(err).to.deep.equal({statusCode: 500});
+        expect(result).to.not.exist;
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        userExpectations();
+        return done();
+      });
+    });
+
+    it('errors on setPermissions', function(done){
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      sinon.stub(dataBroker, 'userInGroup').onFirstCall().callsArgWith(2, null, { admin: {} })
+      sinon.stub(dataBroker, 'setPermissions').onFirstCall().callsArgWith(3, new Error('MarsAndVenus'))
+
+      client.setPermissions('user1', 'user2', { upload: {} }, function(err, result){
+        expect(err).to.deep.equal({statusCode: 500});
+        expect(result).to.not.exist;
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        expect(dataBroker.setPermissions).to.have.been.calledWith('user1', 'user2', { upload: {} }, sinon.match.func);
+        userExpectations();
+        return done();
+      });
+    });
+
+    it('errors on call to userInGroup to get final permissions', function(done){
+      var userExpectations = expectTokenCheck(null, { userid: 'user1' });
+      var userInGroupStub = sinon.stub(dataBroker, 'userInGroup')
+      userInGroupStub.onFirstCall().callsArgWith(2, null, { admin: {} })
+      userInGroupStub.onSecondCall().callsArgWith(2, new Error('MarsAndVenus'))
+      sinon.stub(dataBroker, 'setPermissions').onFirstCall().callsArgWith(3, null)
+
+      client.setPermissions('user1', 'user2', { upload: {} }, function(err, result){
+        expect(err).to.deep.equal({statusCode: 500});
+        expect(result).to.not.exist;
+        expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'user2', sinon.match.func);
+        expect(dataBroker.setPermissions).to.have.been.calledWith('user1', 'user2', { upload: {} }, sinon.match.func);
         userExpectations();
         return done();
       });
