@@ -2,15 +2,19 @@
   "name": "gatekeeper",
   "version": "0.6.2",
   "description": "Authorization server",
-  "repository": "https://github.com/tidepool-org/gatekeeper.git",
-  "author": {
-    "name": "Eric Tschetter",
-    "email": "cheddar@tidepool.org",
-    "url": "https://www.github.com/cheddar"
+  "main": "index.js",
+  "directories": {
+    "lib": "./lib"
   },
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "repository": "https://github.com/tidepool-org/gatekeeper.git",
+  "author": "Tidepool",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "amoeba": "0.2.1",
+    "amoeba": "0.4.0-alpha",
     "async": "0.9.0",
     "bunyan": "1.4.0",
     "hakken": "0.1.8",

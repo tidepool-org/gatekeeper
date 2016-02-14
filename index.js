@@ -24,7 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-var _ = require('lodash');
+'use strict';
 
 var log = require('./lib/log.js')('index.js');
 
@@ -33,8 +33,6 @@ var log = require('./lib/log.js')('index.js');
   var amoeba = require('amoeba');
   var lifecycle = amoeba.lifecycle();
   var hakken = lifecycle.add('hakken', require('hakken')(config.discovery, log).client());
-
-  var httpClient = amoeba.httpClient();
 
   var userApiClient = require('user-api-client').client(
     config.userApi,
