@@ -14,7 +14,7 @@
   "author": "Tidepool",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "amoeba": "0.4.0-alpha.2",
+    "amoeba": "0.4.0",
     "async": "0.9.0",
     "bunyan": "1.4.0",
     "hakken": "0.1.8",
