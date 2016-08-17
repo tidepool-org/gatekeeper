@@ -22,7 +22,7 @@ describe('dataBroker.js', function () {
   ];
 
   before(function (done) {
-    mongoClient = require('../lib/mongo/mongoClient.js')({connectionString: 'mongodb://localhost/gatesBrokerTest'});
+    mongoClient = require('../lib/mongo/mongoClient.js')({connectionString: 'mongodb://localhost/gatekeeper_test'});
     broker = dataBroker({secretKey: 'bob'}, mongoClient);
 
     mongoClient.start(function (err) {

@@ -57,7 +57,7 @@ module.exports = (function() {
   }
 
   env.mongo = {
-    connectionString: config.fromEnvironment('MONGO_CONNECTION_STRING', 'mongodb://localhost/gate')
+    connectionString: config.fromEnvironment('MONGO_CONNECTION_STRING', 'mongodb://localhost/gatekeeper')
   };
 
   env.userApi = {
