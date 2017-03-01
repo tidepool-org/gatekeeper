@@ -1,6 +1,6 @@
 {
   "name": "gatekeeper",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Authorization server",
   "main": "index.js",
   "directories": {
