@@ -1,28 +1,11 @@
-#! /bin/bash -eu
+#!/bin/sh -eu
 
 rm -rf node_modules
-npm install .
 
-BUILD_DIR=build
+TIME="$(date +%s)"
+npm install --production
+TIME="$(($(date +%s)-TIME))"
 
-function cleanup {
-  echo "Killing pid[$1]"
-  kill -9 $1;
-  echo "Deleting the build directory: ${BUILD_DIR}"
-  rm -r ${BUILD_DIR};
-}
+echo "npm install completed in ${TIME} seconds"
 
-rm -rf ${BUILD_DIR}
-DBPATH=${BUILD_DIR}/mongo
-mkdir -p ${DBPATH}
-mongod --noprealloc --nojournal --smallfiles --dbpath ${DBPATH} --logpath ${BUILD_DIR}/mongo_log.log &
-MONGO_PID=$!
-echo "Sleeping to let mongo start up"
-sleep 3
-trap "cleanup ${MONGO_PID}" EXIT
-echo "Running tests"
-
-./node_modules/.bin/jshint lib test
-./node_modules/.bin/mocha test
-
-
+npm dedupe
