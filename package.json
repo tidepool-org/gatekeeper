@@ -1,6 +1,6 @@
 {
   "name": "gatekeeper",
-  "version": "0.7.2",
+  "version": "0.8.0-alpha.0",
   "description": "Authorization server",
   "main": "index.js",
   "directories": {
@@ -22,7 +22,7 @@
     "lodash": "3.4.0",
     "mongodb": "1.4.33",
     "restify": "2.8.5",
-    "user-api-client": "0.4.0"
+    "user-api-client": "0.5.0-alpha.5"
   },
   "devDependencies": {
     "tidepool-gatekeeper": "0.2.2",
