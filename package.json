@@ -22,7 +22,7 @@
     "lodash": "3.4.0",
     "mongodb": "1.4.33",
     "restify": "2.8.5",
-    "user-api-client": "0.5.0-alpha.5"
+    "user-api-client": "0.5.0-oauth.1"
   },
   "devDependencies": {
     "tidepool-gatekeeper": "0.2.2",
