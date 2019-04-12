@@ -25,7 +25,7 @@
     "user-api-client": "0.4.1"
   },
   "devDependencies": {
-    "tidepool-gatekeeper": "0.2.2",
+    "tidepool-gatekeeper": "0.2.3",
     "jshint": "2.6.3",
     "mocha": "2.1.0",
     "salinity": "0.0.8"
