@@ -1,6 +1,6 @@
 {
   "name": "gatekeeper",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Authorization server",
   "main": "index.js",
   "directories": {
@@ -20,7 +20,7 @@
     "bunyan": "1.4.0",
     "hakken": "0.1.8",
     "lodash": "3.4.0",
-    "mongodb": "1.4.33",
+    "mongodb": "3.2.3",
     "restify": "2.8.5",
     "user-api-client": "0.4.0"
   },
