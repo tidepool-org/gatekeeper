@@ -20,7 +20,7 @@
     "bunyan": "1.4.0",
     "hakken": "0.1.11",
     "lodash": "3.4.0",
-    "mongodb": "2.2.33",
+    "mongodb": "3.0.11",
     "restify": "2.8.5",
     "user-api-client": "0.4.1"
   },
