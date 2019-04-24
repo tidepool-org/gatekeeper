@@ -30,7 +30,7 @@ describe('dataBroker.js', function () {
         done(err);
       } else {
         mongoClient.withCollection('perms', done, function (perms) {
-          perms.remove(done);
+          perms.deleteMany({}, done);
         });
       }
     });
