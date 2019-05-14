@@ -29,19 +29,25 @@ describe('dataBroker.js', function () {
       if (err != null) {
         done(err);
       } else {
-        mongoClient.withCollection('perms', done, function (perms) {
-          perms.remove(done);
+        mongoClient.withCollection('perms', done, function (perms, doneCb) {
+          perms.deleteMany({}, done);
+          doneCb();
         });
       }
     });
   });
 
+  after(function(){
+    mongoClient.close();
+  });
+
   function getAllFromPerms(sadCb, happyCb) {
-    mongoClient.withCollection('perms', sadCb, function (perms) {
+    mongoClient.withCollection('perms', sadCb, function (perms, doneCb) {
       perms.find().toArray(function (err, results) {
         if (err != null) {
           return sadCb(err);
         }
+        doneCb();
         happyCb(results);
       });
     });
