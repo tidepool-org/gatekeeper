@@ -77,7 +77,8 @@ module.exports = (function() {
 
   env.discovery = {
     // The host to connect to for discovery
-    host: config.fromEnvironment('DISCOVERY_HOST')
+    host: config.fromEnvironment('DISCOVERY_HOST'),
+    skipHakken: config.fromEnvironment('SKIP_HAKKEN', false)
   };
 
   // The service name to publish on discovery
