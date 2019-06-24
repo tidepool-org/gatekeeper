@@ -1,6 +1,6 @@
 {
   "name": "gatekeeper",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Authorization server",
   "main": "index.js",
   "directories": {
@@ -15,7 +15,7 @@
   "author": "Tidepool",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "amoeba": "0.4.1",
+    "amoeba": "0.4.5",
     "async": "2.6.2",
     "bunyan": "1.8.12",
     "hakken": "0.1.11",
