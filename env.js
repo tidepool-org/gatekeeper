@@ -21,6 +21,7 @@
 var fs = require('fs');
 
 var config = require('amoeba').config;
+var cs = require('amoeba').mongo.toConnectionString;
 
 function maybeReplaceWithContentsOfFile(obj, field)
 {
@@ -57,8 +58,8 @@ module.exports = (function() {
   }
 
   env.mongo = {
-    connectionString: config.fromEnvironment('MONGO_CONNECTION_STRING', 'mongodb://localhost/gatekeeper')
-  };
+    connectionString: cs('gatekeeper') 
+  }
 
   env.userApi = {
     // The config object to discover user-api.  This is just passed through to hakken.watchFromConfig()
