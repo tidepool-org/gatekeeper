@@ -15,15 +15,15 @@
   "author": "Tidepool",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "amoeba": "0.4.7",
+    "amoeba": "0.5.0",
     "async": "2.6.2",
     "bunyan": "1.8.12",
-    "hakken": "0.1.11",
+    "hakken": "^0.1.12",
     "lodash": "4.17.11",
     "mongodb": "3.2.3",
     "restify": "8.3.0",
     "restify-errors": "8.0.0",
-    "user-api-client": "0.4.1"
+    "user-api-client": "^0.4.2"
   },
   "devDependencies": {
     "tidepool-gatekeeper": "0.2.3",
