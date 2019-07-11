@@ -18,7 +18,7 @@
     "amoeba": "0.6.0",
     "async": "2.6.2",
     "bunyan": "1.8.12",
-    "hakken": "^0.1.12",
+    "hakken": "0.1.12",
     "lodash": "4.17.11",
     "mongodb": "3.2.3",
     "restify": "8.3.0",
