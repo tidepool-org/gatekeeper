@@ -23,10 +23,10 @@
     "mongodb": "3.2.3",
     "restify": "8.3.0",
     "restify-errors": "8.0.0",
-    "user-api-client": "^0.4.2"
+    "user-api-client": "0.4.4"
   },
   "devDependencies": {
-    "tidepool-gatekeeper": "0.2.3",
+    "tidepool-gatekeeper": "0.2.4",
     "jshint": "2.10.2",
     "mocha": "6.1.4",
     "salinity": "0.0.8"
