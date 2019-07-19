@@ -1,6 +1,6 @@
 {
   "name": "gatekeeper",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Authorization server",
   "main": "index.js",
   "directories": {
@@ -15,19 +15,19 @@
   "author": "Tidepool",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "amoeba": "0.4.0",
-    "async": "0.9.0",
-    "bunyan": "1.4.0",
-    "hakken": "0.1.8",
-    "lodash": "3.4.0",
-    "mongodb": "1.4.33",
-    "restify": "2.8.5",
-    "user-api-client": "0.4.0"
+    "amoeba": "0.4.1",
+    "async": "2.6.2",
+    "bunyan": "1.8.12",
+    "hakken": "0.1.11",
+    "lodash": "4.17.11",
+    "mongodb": "3.2.3",
+    "restify": "8.3.0",
+    "user-api-client": "0.4.1"
   },
   "devDependencies": {
-    "tidepool-gatekeeper": "0.2.2",
-    "jshint": "2.6.3",
-    "mocha": "2.1.0",
+    "tidepool-gatekeeper": "0.2.3",
+    "jshint": "2.10.2",
+    "mocha": "6.1.4",
     "salinity": "0.0.8"
   }
 }
