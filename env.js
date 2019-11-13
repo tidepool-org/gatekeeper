@@ -21,6 +21,7 @@
 var fs = require('fs');
 
 var config = require('amoeba').config;
+var cs = require('amoeba').mongoUtil.toConnectionString;
 
 function maybeReplaceWithContentsOfFile(obj, field)
 {
@@ -57,8 +58,8 @@ module.exports = (function() {
   }
 
   env.mongo = {
-    connectionString: config.fromEnvironment('MONGO_CONNECTION_STRING', 'mongodb://localhost/gatekeeper')
-  };
+    connectionString: cs('gatekeeper') 
+  }
 
   env.userApi = {
     // The config object to discover user-api.  This is just passed through to hakken.watchFromConfig()
@@ -77,7 +78,8 @@ module.exports = (function() {
 
   env.discovery = {
     // The host to connect to for discovery
-    host: config.fromEnvironment('DISCOVERY_HOST')
+    host: config.fromEnvironment('DISCOVERY_HOST'),
+    skipHakken: config.fromEnvironment('SKIP_HAKKEN', false)
   };
 
   // The service name to publish on discovery
