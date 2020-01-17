@@ -19,7 +19,7 @@
     "async": "2.6.2",
     "bunyan": "1.8.12",
     "hakken": "0.1.12",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "mongodb": "3.2.3",
     "restify": "8.3.0",
     "restify-errors": "8.0.0",
