@@ -32,7 +32,6 @@ var log = require('./lib/log.js')('index.js');
   var config = require('./env.js');
   var amoeba = require('amoeba');
   var lifecycle = amoeba.lifecycle();
-  var hakken = lifecycle.add('hakken', require('hakken')(config.discovery, log).client());
 
   var userApiClient = require('user-api-client').client(
     config.userApi,
@@ -40,6 +39,7 @@ var log = require('./lib/log.js')('index.js');
   );
 
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
+
   var dataBroker = require('./lib/dataBroker.js')(config.gatekeeper, mongoClient);
 
   var server = require('./lib/server.js')(userApiClient, dataBroker);
@@ -56,18 +56,6 @@ var log = require('./lib/log.js')('index.js');
     'servicePublish!',
     {
       start: function(cb) {
-        var serviceDescriptor = { service: config.serviceName };
-        if (config.httpsPort != null) {
-          serviceDescriptor.host = config.publishHost + ':' + config.httpsPort;
-          serviceDescriptor.protocol = 'https';
-        } else if (config.httpPort != null) {
-          serviceDescriptor.host = config.publishHost + ':' + config.httpPort;
-          serviceDescriptor.protocol = 'http';
-        }
-
-        log.info('Publishing service[%j]', serviceDescriptor);
-        hakken.publish(serviceDescriptor);
-
         if (cb != null) {
           cb();
         }
