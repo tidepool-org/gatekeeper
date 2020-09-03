@@ -33,10 +33,11 @@ var log = require('./lib/log.js')('index.js');
   var amoeba = require('amoeba');
   var lifecycle = amoeba.lifecycle();
 
-  var userApiClient = require('user-api-client').client(
-    config.userApi,
-    lifecycle.add('user-api-watch', hakken.watchFromConfig(config.userApi.serviceSpec))
-  );
+  var getter = {
+    get: function() { return [ "shoreline:9107" ] }
+  }
+
+  var userApiClient = require('user-api-client').client( config.userApi, getter );
 
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
 
