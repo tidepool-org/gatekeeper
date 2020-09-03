@@ -62,9 +62,6 @@ module.exports = (function() {
   }
 
   env.userApi = {
-    // The config object to discover user-api.  This is just passed through to hakken.watchFromConfig()
-    serviceSpec: JSON.parse(config.fromEnvironment('USER_API_SERVICE')),
-
     // Name of this server to pass to user-api when getting a server token
     serverName: config.fromEnvironment('SERVER_NAME', 'gatekeeper'),
 
