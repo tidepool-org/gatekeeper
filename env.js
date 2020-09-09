@@ -77,17 +77,8 @@ module.exports = (function() {
     secretKey: config.fromEnvironment('GATEKEEPER_SECRET')
   };
 
-  env.discovery = {
-    // The host to connect to for discovery
-    host: config.fromEnvironment('DISCOVERY_HOST'),
-    skipHakken: config.fromEnvironment('SKIP_HAKKEN', false)
-  };
-
   // The service name to publish on discovery
   env.serviceName = config.fromEnvironment('SERVICE_NAME', 'gatekeeper');
-
-  // The local host to publish to discovery
-  env.publishHost = config.fromEnvironment('PUBLISH_HOST');
 
   return env;
 })();
