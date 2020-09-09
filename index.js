@@ -52,23 +52,6 @@ var log = require('./lib/log.js')('index.js');
     server.withHttps(config.httpsPort, config.httpsConfig);
   }
   lifecycle.add('server', server);
-
-  lifecycle.add(
-    'servicePublish!',
-    {
-      start: function(cb) {
-        if (cb != null) {
-          cb();
-        }
-      },
-      close: function(cb) {
-        if (cb!= null) {
-          cb();
-        }
-      }
-    }
-  );
-
   lifecycle.start();
   lifecycle.join();
 })();
