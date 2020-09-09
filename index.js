@@ -37,6 +37,8 @@ var log = require('./lib/log.js')('index.js');
     get: function() { return [ new URL(config.userApi.userService) ] }
   }
 
+  log.info( 'user service: [%s]', config.userApi.userService);
+
   var userApiClient = require('user-api-client').client( config.userApi, getter );
 
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
