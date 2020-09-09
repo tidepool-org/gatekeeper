@@ -34,7 +34,7 @@ var log = require('./lib/log.js')('index.js');
   var lifecycle = amoeba.lifecycle();
 
   var getter = {
-    get: function() { return [ config.userApi.userService ] }
+    get: function() { return [ new URL(config.userApi.userService) ] }
   }
 
   var userApiClient = require('user-api-client').client( config.userApi, getter );
