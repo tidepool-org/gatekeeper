@@ -64,7 +64,7 @@ module.exports = (function() {
   env.userApi = {
 
     // Name of the service to authenticate user 
-    userService: config.fromEnvironment('USERSERVICE', 'http://shoreline:9107'),
+    userService: config.fromEnvironment('USERSERVICE', 'shoreline:9107'),
 
     // Name of this server to pass to user-api when getting a server token
     serverName: config.fromEnvironment('SERVER_NAME', 'gatekeeper'),

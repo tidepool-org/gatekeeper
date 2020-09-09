@@ -34,7 +34,7 @@ var log = require('./lib/log.js')('index.js');
   var lifecycle = amoeba.lifecycle();
 
   var getter = {
-    get: function() { return [ new URL(config.userApi.userService) ] }
+    get: function() { return [{"protocol": "http", "host": config.userApi.userService}] }
   }
 
   log.info( 'user service: [%s]', config.userApi.userService);
