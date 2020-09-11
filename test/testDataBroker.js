@@ -16,9 +16,9 @@ describe('dataBroker.js', function () {
   var broker;
 
   var mockData = [
-    {userId: 'bob', groupId: 'theGroup', permissions: { view: {}, upload: { sources: ['carelink'] } }},
-    {userId: 'bob', groupId: 'anotherGroup', permissions: { view: {}, root: {} }},
-    {userId: 'sally', groupId: 'theGroup', permissions: { view: { messages: false }} }
+    {userId: 'bob', sharerId: 'theGroup', permissions: { view: {}, upload: { sources: ['carelink'] } }},
+    {userId: 'bob', sharerId: 'anotherGroup', permissions: { view: {}, root: {} }},
+    {userId: 'sally', sharerId: 'theGroup', permissions: { view: { messages: false }} }
   ];
 
   before(function (done) {
@@ -57,7 +57,7 @@ describe('dataBroker.js', function () {
     async.mapSeries(
       mockData,
       function (entry, cb) {
-        broker.setPermissions(entry.userId, entry.groupId, entry.permissions, cb);
+        broker.setPermissions(entry.userId, entry.sharerId, entry.permissions, cb);
       },
       function (err) {
         if (err != null) {
@@ -68,7 +68,7 @@ describe('dataBroker.js', function () {
           expect(results).length(mockData.length);
 
           for (var i = 0; i < results.length; ++i) {
-            expect(results[i]).to.contain.key('groupId').not.equals(mockData[i].groupId);
+            expect(results[i]).to.contain.key('sharerId').not.equals(mockData[i].sharerId);
           }
 
           var pickFields = _.partialRight(_.pick.bind(_), 'userId', 'permissions');

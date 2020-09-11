@@ -62,8 +62,9 @@ module.exports = (function() {
   }
 
   env.userApi = {
-    // The config object to discover user-api.  This is just passed through to hakken.watchFromConfig()
-    serviceSpec: JSON.parse(config.fromEnvironment('USER_API_SERVICE')),
+
+    // Name of the service to authenticate user 
+    userService: config.fromEnvironment('USERSERVICE', 'shoreline:9107'),
 
     // Name of this server to pass to user-api when getting a server token
     serverName: config.fromEnvironment('SERVER_NAME', 'gatekeeper'),
@@ -76,17 +77,8 @@ module.exports = (function() {
     secretKey: config.fromEnvironment('GATEKEEPER_SECRET')
   };
 
-  env.discovery = {
-    // The host to connect to for discovery
-    host: config.fromEnvironment('DISCOVERY_HOST'),
-    skipHakken: config.fromEnvironment('SKIP_HAKKEN', false)
-  };
-
   // The service name to publish on discovery
   env.serviceName = config.fromEnvironment('SERVICE_NAME', 'gatekeeper');
-
-  // The local host to publish to discovery
-  env.publishHost = config.fromEnvironment('PUBLISH_HOST');
 
   return env;
 })();
