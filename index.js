@@ -41,7 +41,7 @@ var log = require('./lib/log.js')('index.js');
 
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
 
-  var dataBroker = require('./lib/dataBroker.js')(config.gatekeeper, mongoClient);
+  var dataBroker = require('./lib/dataBroker.js')(mongoClient);
 
   var server = require('./lib/server.js')(userApiClient, dataBroker);
 
