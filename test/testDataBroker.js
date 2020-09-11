@@ -23,7 +23,7 @@ describe('dataBroker.js', function () {
 
   before(function (done) {
     mongoClient = require('../lib/mongo/mongoClient.js')({connectionString: 'mongodb://localhost/gatekeeper_test'});
-    broker = dataBroker({}, mongoClient);
+    broker = dataBroker(mongoClient);
 
     mongoClient.start(function (err) {
       if (err != null) {
