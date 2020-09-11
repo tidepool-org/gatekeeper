@@ -15,7 +15,7 @@
   "author": "Tidepool",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "amoeba": "0.8.0",
+    "amoeba": "0.8.1",
     "async": "3.2.0",
     "bunyan": "1.8.14",
     "lodash": "4.17.20",
