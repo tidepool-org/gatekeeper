@@ -73,10 +73,6 @@ module.exports = (function() {
     serverSecret: config.fromEnvironment('SERVER_SECRET')
   };
 
-  env.gatekeeper = {
-    secretKey: config.fromEnvironment('GATEKEEPER_SECRET')
-  };
-
   // The service name to publish on discovery
   env.serviceName = config.fromEnvironment('SERVICE_NAME', 'gatekeeper');
 
