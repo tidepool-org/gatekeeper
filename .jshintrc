@@ -3,7 +3,7 @@
   // Example: https://github.com/jshint/jshint/blob/master/examples/.jshintrc
   // Documentation: http://www.jshint.com/docs/
   "browser": true,
-  "esnext": true,
+  "esversion": 8,
   "eqnull": true,
   "globals": { 
     "process": false, 

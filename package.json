@@ -15,7 +15,7 @@
   "author": "Tidepool",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "amoeba": "0.8.1",
+    "amoeba": "0.9.0",
     "async": "3.2.0",
     "bunyan": "1.8.14",
     "lodash": "4.17.20",
@@ -25,9 +25,9 @@
     "user-api-client": "0.5.0"
   },
   "devDependencies": {
-    "tidepool-gatekeeper": "0.2.4",
     "jshint": "2.12.0",
     "mocha": "8.1.3",
-    "salinity": "0.0.8"
+    "salinity": "0.0.8",
+    "tidepool-gatekeeper": "0.2.4"
   }
 }
