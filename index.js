@@ -71,4 +71,4 @@ var events = require('./lib/events.js');
   lifecycle.add('server', server);
   lifecycle.start();
   lifecycle.join();
-})();
+})().catch( e => { console.error(e); } );;
