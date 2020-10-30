@@ -26,22 +26,39 @@
 
 'use strict';
 
-var log = require('./lib/log.js')('index.js');
+var logMaker = require('./lib/log.js');
 
-(function () {
+var events = require('./lib/events.js');
+
+(async function () {
   var config = require('./env.js');
   var amoeba = require('amoeba');
   var lifecycle = amoeba.lifecycle();
 
   var getter = {
-    get: function() { return [{"protocol": "http", "host": config.userApi.userService}] }
-  }
+    get: function() { return [{'protocol': 'http', 'host': config.userApi.userService}]; }
+  };
 
   var userApiClient = require('user-api-client').client( config.userApi, getter );
 
   var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
 
   var dataBroker = require('./lib/dataBroker.js')(mongoClient);
+
+  const eventsLogger = logMaker('lib/events.js');
+  const eventsConfig = amoeba.events.loadConfigFromEnv();
+  const userEventsHandler = events.createUserEventsHandler(dataBroker, eventsLogger);
+  const consumer = await amoeba.events.createEventConsumer(eventsConfig, userEventsHandler, eventsLogger);
+
+  lifecycle.add('eventConsumer', {
+    start: function() {
+      consumer.start();
+    },
+    close: function() {
+      consumer.close();
+    },
+  });
+
 
   var server = require('./lib/server.js')(userApiClient, dataBroker);
 
@@ -54,4 +71,4 @@ var log = require('./lib/log.js')('index.js');
   lifecycle.add('server', server);
   lifecycle.start();
   lifecycle.join();
-})();
+})().catch( e => { console.error(e); } );;
