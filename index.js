@@ -33,7 +33,6 @@ var events = require('./lib/events.js');
 (async function () {
   var config = require('./env.js');
   var amoeba = require('amoeba');
-  var lifecycle = amoeba.lifecycle();
 
   var getter = {
     get: function() { return [{'protocol': 'http', 'host': config.userApi.userService}]; }
@@ -41,34 +40,17 @@ var events = require('./lib/events.js');
 
   var userApiClient = require('user-api-client').client( config.userApi, getter );
 
-  var mongoClient = lifecycle.add('mongoClient', require('./lib/mongo/mongoClient.js')(config.mongo));
+  var mongoClient = require('./lib/mongo/mongoClient.js')(config.mongo);
 
   var dataBroker = require('./lib/dataBroker.js')(mongoClient);
 
   const eventsLogger = logMaker('lib/events.js');
   const eventsConfig = amoeba.events.loadConfigFromEnv();
   const userEventsHandler = events.createUserEventsHandler(dataBroker, eventsLogger);
-  const consumer = await amoeba.events.createEventConsumer(eventsConfig, userEventsHandler, eventsLogger);
+  const kafkaConsumer = await amoeba.events.createEventConsumer(eventsConfig, userEventsHandler, eventsLogger);
 
-  lifecycle.add('eventConsumer', {
-    start: function() {
-      consumer.start();
-    },
-    close: function() {
-      consumer.close();
-    },
-  });
+  var server = require('./lib/server.js')(config, userApiClient, dataBroker, kafkaConsumer, mongoClient);
 
+  server.start()
 
-  var server = require('./lib/server.js')(userApiClient, dataBroker);
-
-  if (config.httpPort != null) {
-    server.withHttp(config.httpPort);
-  }
-  if (config.httpsPort != null) {
-    server.withHttps(config.httpsPort, config.httpsConfig);
-  }
-  lifecycle.add('server', server);
-  lifecycle.start();
-  lifecycle.join();
 })().catch( e => { console.error(e); } );;
