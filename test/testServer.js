@@ -15,20 +15,25 @@ var sinon = salinity.sinon;
 describe('server.js', function(){
   var userApiClient = mockableObject.make('checkToken');
   var dataBroker = mockableObject.make('userInGroup', 'usersInGroup', 'groupsForUser', 'setPermissions');
-  var server = require('../lib/server.js')(userApiClient, dataBroker);
+  var kafkaConsumer = mockableObject.make('stop', 'start');
+  var mongoClient = mockableObject.make('close', 'start');
+  var server = require('../lib/server.js')({ httpPort: '12345'}, userApiClient, dataBroker, kafkaConsumer, mongoClient);
 
   var token = 'tokenTextHere';
   var tokenGetter = function(cb){ return cb(null, token); };
   var hostGetter = { get: function(){ return [{protocol: 'http', host: 'localhost:12345'}]; } };
   var client = require('tidepool-gatekeeper').client(require('amoeba').httpClient(), tokenGetter, hostGetter);
 
-  before(function(done){
-    server.withHttp(12345, done);
+  before(function(){
+    sinon.stub(kafkaConsumer, 'start');
+    sinon.stub(mongoClient, 'start');
     server.start();
   });
 
   after(function(){
-    server.close();
+    sinon.stub(kafkaConsumer, 'stop');
+    sinon.stub(mongoClient, 'close');
+    server.onShutdown();
   });
 
   beforeEach(function(){
@@ -252,7 +257,7 @@ describe('server.js', function(){
     it('rejects other users in the group without the admin permission', function(done) {
       var userExpectations = expectTokenCheck(null, { userid: 'user1' });
       sinon.stub(dataBroker, 'userInGroup').callsArgWith(2, null, {view: {}});
-      
+
       client.userInGroup('user2', 'groupA', function(err, result){
         expect(result).to.not.exist;
         expect(dataBroker.userInGroup).to.have.been.calledWith('user1', 'groupA', sinon.match.func);
