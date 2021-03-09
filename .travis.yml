@@ -8,12 +8,14 @@ node_js:
 install:
   - npm install
 
+before_script:
+  - curl https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+  - echo "deb https://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/4.4 multiverse" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get -qq update
+  - sudo apt-get -y install mongodb-org
+  - sudo systemctl start mongod
+
 addons:
-  apt:
-    sources:
-      - mongodb-3.2-trusty
-    packages:
-      - mongodb-org-server
   artifacts:
     s3_region: us-west-2
     paths:
@@ -23,7 +25,7 @@ addons:
 
 services:
   - docker
-  - mongodb
+  - mongodb 
 
 script:
   - npm run lint
