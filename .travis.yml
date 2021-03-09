@@ -29,7 +29,6 @@ addons:
 
 services:
   - docker
-  - mongodb 
 
 script:
   - npm run lint
