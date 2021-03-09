@@ -8,12 +8,16 @@ node_js:
 install:
   - npm install
 
-before_script:
-  - curl https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
-  - echo "deb https://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/4.4 multiverse" | sudo tee -a /etc/apt/sources.list
-  - sudo apt-get -qq update
-  - sudo apt-get -y install mongodb-org
-  - sudo systemctl start mongod
+env:
+  global:
+  - MONGODB=4.4.1
+before_install:
+- sudo apt-get remove -y mongodb-org mongodb-org-mongos mongodb-org-server mongodb-org-shell mongodb-org-tools
+- wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1804-${MONGODB}.tgz -O /tmp/mongodb.tgz
+- tar -xf /tmp/mongodb.tgz
+- mkdir /tmp/data
+- ${PWD}/mongodb-linux-x86_64-ubuntu1804-${MONGODB}/bin/mongod --dbpath /tmp/data --bind_ip 127.0.0.1 --logpath ${PWD}/mongod.log &> /dev/null &
+- until nc -z localhost 27017; do echo Waiting for MongoDB; sleep 1; done
 
 addons:
   artifacts:
