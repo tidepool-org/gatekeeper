@@ -26,3 +26,4 @@ node_modules
 
 deploy/
 artifact_node.sh
+.DS_Store
