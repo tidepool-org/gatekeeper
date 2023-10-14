@@ -25,5 +25,5 @@ node_modules
 .idea
 
 deploy/
-artifact_node.sh
+artifact_docker.sh
 .DS_Store
