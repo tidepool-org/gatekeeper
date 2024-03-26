@@ -27,3 +27,7 @@ node_modules
 deploy/
 artifact_docker.sh
 .DS_Store
+
+.vscode/
+*.envrc
+*.env
