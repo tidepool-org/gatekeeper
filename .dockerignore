@@ -1,4 +1,16 @@
+.artifactignore
 .git
 .gitignore
+.jshintrc
+.travis.yml
+artifact.sh
+build.sh
+LICENSE
 node_modules
 npm-debug.log
+README.md
+test
+
+.vscode/
+*.envrc
+*.env
