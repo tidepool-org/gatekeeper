@@ -22,7 +22,7 @@
     "amoeba": "1.2.3",
     "async": "3.2.4",
     "bunyan": "1.8.15",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "mongodb": "^5.0.1",
     "mongodb-legacy": "^5.0.0",
     "restify": "11.1.0",
